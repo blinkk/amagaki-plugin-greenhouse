@@ -1,0 +1,64 @@
+{
+    "name": "@amagaki/amagaki-plugin-greenhouse",
+    "version": "0.0.1",
+    "license": "MIT",
+    "homepage": "https://amagaki.dev",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/blinkk/amagaki-plugin-greenhouse.git"
+    },
+    "engines": {
+        "node": ">=14"
+    },
+    "main": "./dist/index.js",
+    "scripts": {
+        "build:example": "amagaki build example",
+        "check": "gts check",
+        "clean": "gts clean",
+        "compile": "tsc",
+        "dev:start": "npm run compile",
+        "dev": "nodemon --watch src -e ts --exec npm run dev:start",
+        "fix": "node ./node_modules/eslint/bin/eslint --fix src/**/*.ts",
+        "prepare": "rm -rf dist/; npm run compile",
+        "test": "ava"
+    },
+    "ava": {
+        "require": [
+            "ts-node/register"
+        ],
+        "extensions": [
+            "ts"
+        ],
+        "files": [
+            "src/*.test.ts"
+        ],
+        "timeout": "20s"
+    },
+    "devDependencies": {
+        "@types/express": "^4.17.12",
+        "@types/js-yaml": "^3.12.5",
+        "@types/node": "^13.11.1",
+        "@types/node-fetch": "^2.5.7",
+        "ava": "^3.14.0",
+        "eslint": "^7.15.0",
+        "eslint-plugin-sort-class-members": "^1.9.0",
+        "gts": "^2.0.2",
+        "nodemon": "^2.0.4",
+        "ts-loader": "^7.0.5",
+        "ts-node": "^8.10.2",
+        "typedoc": "^0.19.2",
+        "typescript": "^3.8.3"
+    },
+    "dependencies": {
+        "@amagaki/amagaki": "^1.6.1",
+        "@types/async": "^3.2.9",
+        "async": "^3.2.2",
+        "google-auth-library": "^7.9.1",
+        "googleapis": "^85.0.0",
+        "js-yaml": "^4.0.0",
+        "node-fetch": "^2.6.1"
+    },
+    "files": [
+        "dist/"
+    ]
+}
