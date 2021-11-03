@@ -35,8 +35,10 @@
         "timeout": "20s"
     },
     "devDependencies": {
+        "@types/dompurify": "^2.3.1",
         "@types/express": "^4.17.12",
         "@types/js-yaml": "^3.12.5",
+        "@types/jsdom": "^16.2.13",
         "@types/node": "^13.11.1",
         "@types/node-fetch": "^2.5.7",
         "ava": "^3.14.0",
@@ -53,10 +55,12 @@
         "@amagaki/amagaki": "^1.6.1",
         "@types/async": "^3.2.9",
         "async": "^3.2.2",
+        "dompurify": "^2.3.3",
         "google-auth-library": "^7.9.1",
         "googleapis": "^85.0.0",
         "html-entities": "^2.3.2",
         "js-yaml": "^4.0.0",
+        "jsdom": "^18.0.1",
         "node-fetch": "^2.6.1"
     },
     "files": [

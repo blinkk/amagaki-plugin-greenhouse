@@ -4,7 +4,8 @@
 [![GitHub Actions][github-image]][github-url]
 [![TypeScript Style Guide][gts-image]][gts-url]
 
-An Amagaki plugin for fetching content from Greenhouse.
+An Amagaki plugin for fetching content from Greenhouse. By default, content is
+sanitized using [DOMPurify](https://github.com/cure53/DOMPurify).
 
 ## Usage
 
@@ -35,7 +36,6 @@ export default (pod: Pod) => {
     });
   });
 };
-
 ```
 
 [github-image]: https://github.com/blinkk/amagaki-plugin-greenhouse/workflows/Run%20tests/badge.svg
