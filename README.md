@@ -21,26 +21,18 @@ import {GreenhousePlugin} from '@amagaki/amagaki-plugin-greenhouse';
 import {BuilderPlugin, Pod} from '@amagaki/amagaki';
 
 export default (pod: Pod) => {
-  // Initialize the Greenhouse plugin.
-  const greenhouse = GreenhousePlugin.register(pod, {
-    boardToken: 'boardToken',
-  });
-
+  // Sync Greenhouse prior to building.
   const builderPlugin = pod.plugins.get('BuilderPlugin') as BuilderPlugin;
   builderPlugin.addBeforeBuildStep(async () => {
-
-    // Save jobs to documents within a collection.
+    const greenhouse = GreenhousePlugin.register(pod, {
+      boardToken: 'boardToken',
+    });
     await greenhouse.bindCollection({
       collectionPath: '/content/jobs',
     });
-
-    // Save schools to a partial document.
-    const schools = await greenhouse.getSchools();
-    await pod.writeFileAsync(
-      '/content/partials/schools.yaml',
-      pod.dumpYaml(schools)
-    );
-
+    await greenhouse.saveEducationFile({
+      podPath: '/content/partials/education.yaml',
+    });
   });
 };
 

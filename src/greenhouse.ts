@@ -15,6 +15,10 @@ export interface BindCollectionOptions {
   collectionPath: string;
 }
 
+export interface SaveEducationFileOptions {
+  podPath: string;
+}
+
 interface GreenhouseJobsResponseMeta {
   total: number;
 }
@@ -115,7 +119,7 @@ export class GreenhousePlugin {
       boardToken: this.options.boardToken,
     });
     const response = await fetch(url);
-    return (await response.json()) as GreenhouseEducationResponse;
+    return ((await response.json()) as GreenhouseEducationResponse).items;
   }
 
   async getDisciplines() {
@@ -123,7 +127,7 @@ export class GreenhousePlugin {
       boardToken: this.options.boardToken,
     });
     const response = await fetch(url);
-    return (await response.json()) as GreenhouseEducationResponse;
+    return ((await response.json()) as GreenhouseEducationResponse).items;
   }
 
   async getSchools() {
@@ -167,9 +171,23 @@ export class GreenhousePlugin {
       jobId: jobId,
     });
     const response = await fetch(url);
-    return await response.json();
+    return (await response.json()) as GreenhouseJob;
   }
 
+  /** Saves Greenhouse education data to a file within the pod. */
+  async saveEducationFile(options: SaveEducationFileOptions) {
+    const education = {
+      degrees: await this.getDegrees(),
+      disciplines: await this.getDisciplines(),
+      schools: await this.getSchools(),
+    };
+    await this.pod.writeFileAsync(
+      options.podPath,
+      this.pod.dumpYaml(education)
+    );
+  }
+
+  /** Binds an Amagaki collection to Greenhouse jobs. Each job is saved as an individual YAML document. */
   async bindCollection(options: BindCollectionOptions) {
     const realPath = this.pod.getAbsoluteFilePath(options.collectionPath);
     // `ensureDirectoryExists` is actually `ensureDirectoryExistsForFile`.
