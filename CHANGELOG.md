@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/blinkk/amagaki-plugin-greenhouse/compare/v1.0.0...v1.1.0) (2021-11-03)
+
+
+### Features
+
+* decode html entities within job content ([69eb16c](https://www.github.com/blinkk/amagaki-plugin-greenhouse/commit/69eb16cefe4ab1cac1707100467d89cd391eb4b5))
+* sanitize and clean job content ([2c664b3](https://www.github.com/blinkk/amagaki-plugin-greenhouse/commit/2c664b354dcbd1181c76cd6d3bea6ea5937358d6))
+
 ## 1.0.0 (2021-11-03)
 
 
