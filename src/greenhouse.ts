@@ -3,6 +3,7 @@ import * as async from 'async';
 import {Builder, interpolate} from '@amagaki/amagaki';
 
 import {Pod} from '@amagaki/amagaki';
+import {decode} from 'html-entities';
 import fetch from 'node-fetch';
 import fs from 'fs';
 import fsPath from 'path';
@@ -157,12 +158,18 @@ export class GreenhousePlugin {
     return items;
   }
 
+  private cleanJob(job: GreenhouseJob) {
+    job.content = decode(job.content);
+  }
+
   async getJobs() {
     const url = interpolate(this.pod, GreenhousePlugin.JOBS_URL, {
       boardToken: this.options.boardToken,
     });
     const response = await fetch(url);
-    return (await response.json()) as GreenhouseJobsResponse;
+    const data = (await response.json()) as GreenhouseJobsResponse;
+    data.jobs.map(job => this.cleanJob(job));
+    return data;
   }
 
   async getJob(jobId: number) {
@@ -171,7 +178,9 @@ export class GreenhousePlugin {
       jobId: jobId,
     });
     const response = await fetch(url);
-    return (await response.json()) as GreenhouseJob;
+    const job = (await response.json()) as GreenhouseJob;
+    this.cleanJob(job);
+    return job;
   }
 
   /** Saves Greenhouse education data to a file within the pod. */

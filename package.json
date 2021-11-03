@@ -55,6 +55,7 @@
         "async": "^3.2.2",
         "google-auth-library": "^7.9.1",
         "googleapis": "^85.0.0",
+        "html-entities": "^2.3.2",
         "js-yaml": "^4.0.0",
         "node-fetch": "^2.6.1"
     },
