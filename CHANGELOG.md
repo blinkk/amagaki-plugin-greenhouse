@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.0 (2021-11-03)
+
+
+### Features
+
+* add saveEducation method ([3063929](https://www.github.com/blinkk/amagaki-plugin-greenhouse/commit/3063929e4a0c40dbbeea588cf0d6bc08e32d238d))
+* initial commit for greenhouse plugin ([1bf3400](https://www.github.com/blinkk/amagaki-plugin-greenhouse/commit/1bf34003b2304c46e01b8f3fb5ee50dc6cf495c2))
+* support fetching schools ([e013a93](https://www.github.com/blinkk/amagaki-plugin-greenhouse/commit/e013a9336f6b94710dfb9fae4cfa7d2275598fbe))
+
 ## [3.0.0](https://www.github.com/blinkk/amagaki-plugin-google-sheets/compare/v2.1.0...v3.0.0) (2021-08-24)
 
 
