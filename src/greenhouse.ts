@@ -19,6 +19,21 @@ interface GreenhouseJobsResponseMeta {
   total: number;
 }
 
+interface GreenhouseEducationResponseMeta {
+  total_count: number;
+  per_page: number;
+}
+
+interface GreenhouseEducationItem {
+  id: number;
+  text: string;
+}
+
+interface GreenhouseEducationResponse {
+  items: GreenhouseEducationItem[];
+  meta: GreenhouseEducationResponseMeta;
+}
+
 interface GreenhouseJob {
   absolute_url: string;
   data_compliance: any[];
@@ -73,11 +88,10 @@ export class GreenhousePlugin {
   pod: Pod;
 
   static CONCURRENT_REQUESTS = 20;
+  static SCHOOL_PAGES = 30;
 
   static DEGREES_URL =
     'https://api.greenhouse.io/v1/boards/${boardToken}/education/degrees';
-  static DEPARTMENTS_URL =
-    'https://api.greenhouse.io/v1/boards/${boardToken}/departments';
   static DISCIPLINES_URL =
     'https://api.greenhouse.io/v1/boards/${boardToken}/education/disciplines';
   static JOBS_URL =
@@ -94,6 +108,49 @@ export class GreenhousePlugin {
 
   static register(pod: Pod, options: GreenhousePluginOptions) {
     return new GreenhousePlugin(pod, options);
+  }
+
+  async getDegrees() {
+    const url = interpolate(this.pod, GreenhousePlugin.DEGREES_URL, {
+      boardToken: this.options.boardToken,
+    });
+    const response = await fetch(url);
+    return (await response.json()) as GreenhouseEducationResponse;
+  }
+
+  async getDisciplines() {
+    const url = interpolate(this.pod, GreenhousePlugin.DISCIPLINES_URL, {
+      boardToken: this.options.boardToken,
+    });
+    const response = await fetch(url);
+    return (await response.json()) as GreenhouseEducationResponse;
+  }
+
+  async getSchools() {
+    let items: GreenhouseEducationItem[] = [];
+    const pages = [...Array(GreenhousePlugin.SCHOOL_PAGES).keys()];
+    let numTotal = 0;
+    // Greenhouse has ~26 (fixed) pages of schools. Fetch them all.
+    await async.eachLimit(
+      pages,
+      GreenhousePlugin.CONCURRENT_REQUESTS,
+      async (page: number) => {
+        const url = interpolate(this.pod, GreenhousePlugin.SCHOOLS_URL, {
+          boardToken: this.options.boardToken,
+        });
+        const response = await fetch(`${url}?page=${page}`);
+        const educationResponse = (await response.json()) as GreenhouseEducationResponse;
+        items = items.concat(educationResponse.items);
+        if (!numTotal) {
+          numTotal = educationResponse.meta.total_count;
+        }
+      }
+    );
+    items = items.sort((a, b) => a.text.localeCompare(b.text));
+    console.log(
+      `Downloaded ${numTotal} schools from Greenhouse board ${this.options.boardToken}`
+    );
+    return items;
   }
 
   async getJobs() {
@@ -124,9 +181,14 @@ export class GreenhousePlugin {
 
     // Download all jobs.
     const resp = await this.getJobs();
+    if (!resp.meta) {
+      throw new Error(
+        `Failed to download from Greenhouse board ${this.options.boardToken}`
+      );
+    }
     const jobResponses: any[] = [];
     console.log(
-      `Downloading ${resp.meta.total} jobs from Greenhouse board -> ${this.options.boardToken}`
+      `Downloading ${resp.meta.total} jobs from Greenhouse board ${this.options.boardToken}...`
     );
     await async.eachLimit(
       resp.jobs,
