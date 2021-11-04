@@ -1,9 +1,11 @@
 import * as async from 'async';
+import * as jsdom from 'jsdom';
 
 import {Builder, interpolate} from '@amagaki/amagaki';
 
 import {Pod} from '@amagaki/amagaki';
 import {decode} from 'html-entities';
+import dompurify from 'dompurify';
 import fetch from 'node-fetch';
 import fs from 'fs';
 import fsPath from 'path';
@@ -20,15 +22,6 @@ export interface SaveEducationFileOptions {
   podPath: string;
 }
 
-interface GreenhouseJobsResponseMeta {
-  total: number;
-}
-
-interface GreenhouseEducationResponseMeta {
-  total_count: number;
-  per_page: number;
-}
-
 interface GreenhouseEducationItem {
   id: number;
   text: string;
@@ -36,61 +29,86 @@ interface GreenhouseEducationItem {
 
 interface GreenhouseEducationResponse {
   items: GreenhouseEducationItem[];
-  meta: GreenhouseEducationResponseMeta;
+  meta: {
+    total_count: number;
+    per_page: number;
+  };
+}
+
+interface QuestionValue {
+  value: number;
+  label: string;
+}
+
+interface Question {
+  required: boolean;
+  private: boolean;
+  label: string;
+  name: string;
+  type: string;
+  values: {
+    value: number;
+    label: string;
+  }[];
+  description: string;
+  answer_options: {
+    id: number;
+    label: string;
+    free_form: boolean;
+  }[];
+  fields: Question[];
+}
+
+interface JobChild {
+  child_ids: number[];
+  id: number;
+  name: string;
+  parent_id: number;
 }
 
 interface GreenhouseJob {
   absolute_url: string;
-  data_compliance: any[];
+  compliance: {
+    description: string;
+    type: string;
+    questions: Question[];
+  }[];
+  data_compliance: {
+    type: string;
+    requires_consent: boolean;
+    retention_period: number;
+  }[];
   internal_job_id: number;
-  location: any;
-  metadata: any[];
+  location: {
+    name: string;
+  };
+  metadata: {
+    id: number;
+    name: string;
+    value_type: string;
+    value: string;
+  }[];
   id: number;
   updated_at: string;
   requisition_id: string;
   title: string;
   content: string;
-  departments: any[];
-  offices: any[];
+  departments: JobChild[];
+  offices: JobChild[];
+  questions: Question[];
 }
 
 export interface GreenhouseJobsResponse {
   jobs: GreenhouseJob[];
-  meta: GreenhouseJobsResponseMeta;
+  meta: {
+    total: number;
+  };
 }
-
-const DEFAULT_SANITIZATION_SETTINGS = {
-  allowedAttributes: [{tag: 'a', attributes: ['href', 'src']}],
-  allowedTags: [
-    'a',
-    'b',
-    'br',
-    'em',
-    'hr',
-    'i',
-    'img',
-    'li',
-    'ol',
-    'p',
-    'span',
-    'strong',
-    'sub',
-    'sup',
-    'u',
-    'ul',
-    'video',
-    'h1',
-    'h2',
-    'h3',
-    'h4',
-    'h5',
-    'h6',
-  ],
-};
 
 export class GreenhousePlugin {
   options: GreenhousePluginOptions;
   pod: Pod;
+  DOMPurify: dompurify.DOMPurifyI;
 
   static CONCURRENT_REQUESTS = 20;
   static SCHOOL_PAGES = 30;
@@ -109,6 +127,7 @@ export class GreenhousePlugin {
   constructor(pod: Pod, options: GreenhousePluginOptions) {
     this.pod = pod;
     this.options = options;
+    this.DOMPurify = dompurify(new jsdom.JSDOM('').window);
   }
 
   static register(pod: Pod, options: GreenhousePluginOptions) {
@@ -158,8 +177,19 @@ export class GreenhousePlugin {
     return items;
   }
 
+  private cleanContent(content: string) {
+    return this.DOMPurify.sanitize(decode(content), {
+      FORBID_ATTR: ['style'],
+    });
+  }
+
   private cleanJob(job: GreenhouseJob) {
-    job.content = decode(job.content);
+    job.content = this.cleanContent(job.content);
+    if (job.compliance) {
+      job.compliance.forEach(compliance => {
+        compliance.description = this.cleanContent(compliance.description);
+      });
+    }
   }
 
   async getJobs() {
