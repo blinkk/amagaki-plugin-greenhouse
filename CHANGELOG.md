@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/blinkk/amagaki-plugin-greenhouse/compare/v1.1.0...v1.2.0) (2021-11-04)
+
+
+### Features
+
+* sanitize compliance and descriptions ([fbbc208](https://www.github.com/blinkk/amagaki-plugin-greenhouse/commit/fbbc2087124be1e92e08c60e95bd2016f3ed1db2))
+
 ## [1.1.0](https://www.github.com/blinkk/amagaki-plugin-greenhouse/compare/v1.0.0...v1.1.0) (2021-11-03)
 
 
