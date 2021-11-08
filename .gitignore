@@ -1,5 +1,6 @@
-amagaki-*.tgz
 dist/
-example/build
+example/build/
+test/
+amagaki-*.tgz
 node_modules/
 secrets.txt

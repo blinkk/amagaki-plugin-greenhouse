@@ -9,6 +9,8 @@ sanitized using [DOMPurify](https://github.com/cure53/DOMPurify).
 
 ## Usage
 
+### As a plugin
+
 1. Install the plugin.
 
 ```shell
@@ -36,6 +38,19 @@ export default (pod: Pod) => {
     });
   });
 };
+```
+
+### Via the CLI
+
+This package is also distributed with a CLI so you can download Greenhouse job
+board data without using Amagaki.
+
+```
+npx @blinkk/amagaki-plugin-greenhouse download \
+  -b <boardToken> \
+  -j <jobsCollectionPodPath> \
+  -e <educationPodPath> \
+  [root]
 ```
 
 [github-image]: https://github.com/blinkk/amagaki-plugin-greenhouse/workflows/Run%20tests/badge.svg
