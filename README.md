@@ -46,7 +46,7 @@ This package is also distributed with a CLI so you can download Greenhouse job
 board data without using Amagaki.
 
 ```
-npx @blinkk/amagaki-plugin-greenhouse download \
+npx @amagaki/amagaki-plugin-greenhouse download \
   -b <boardToken> \
   -j <jobsCollectionPodPath> \
   -e <educationPodPath> \
