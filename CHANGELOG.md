@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/blinkk/amagaki-plugin-greenhouse/compare/v1.2.0...v1.3.0) (2021-11-08)
+
+
+### Features
+
+* add cli ([39d15ab](https://www.github.com/blinkk/amagaki-plugin-greenhouse/commit/39d15ab663ad79251218b6337a561bb6ae312d40))
+
 ## [1.2.0](https://www.github.com/blinkk/amagaki-plugin-greenhouse/compare/v1.1.0...v1.2.0) (2021-11-04)
 
 
