@@ -117,8 +117,7 @@ export class GreenhousePlugin {
     'https://api.greenhouse.io/v1/boards/${boardToken}/education/degrees';
   static DISCIPLINES_URL =
     'https://api.greenhouse.io/v1/boards/${boardToken}/education/disciplines';
-  static JOBS_URL =
-    'https://api.greenhouse.io/v1/boards/${boardToken}/jobs?content=true';
+  static JOBS_URL = 'https://api.greenhouse.io/v1/boards/${boardToken}/jobs';
   static JOB_URL =
     'https://api.greenhouse.io/v1/boards/${boardToken}/jobs/${jobId}?questions=true';
   static SCHOOLS_URL =
@@ -192,10 +191,13 @@ export class GreenhousePlugin {
     }
   }
 
-  async getJobs() {
-    const url = interpolate(this.pod, GreenhousePlugin.JOBS_URL, {
+  async getJobs(options?: {includeContent?: boolean}) {
+    let url = interpolate(this.pod, GreenhousePlugin.JOBS_URL, {
       boardToken: this.options.boardToken,
     });
+    if (options?.includeContent) {
+      url += '?content=true';
+    }
     const response = await fetch(url);
     const data = (await response.json()) as GreenhouseJobsResponse;
     data.jobs.map(job => this.cleanJob(job));
