@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://www.github.com/blinkk/amagaki-plugin-greenhouse/compare/v1.3.0...v1.4.0) (2021-11-29)
+
+
+### Features
+
+* do not include content by default ([18c4b67](https://www.github.com/blinkk/amagaki-plugin-greenhouse/commit/18c4b676998047838f9f879d7281eb5b37d368ee))
+
 ## [1.3.0](https://www.github.com/blinkk/amagaki-plugin-greenhouse/compare/v1.2.0...v1.3.0) (2021-11-08)
 
 
