@@ -66,6 +66,26 @@ interface JobChild {
   parent_id: number;
 }
 
+interface Office {
+  id: number;
+  name: string;
+  departments: {
+    id: number;
+    name: string;
+    parent_id: number;
+    child_ids: number[];
+    jobs: {
+      id: number;
+      title: string;
+      location: {
+        name: string;
+      };
+      updated_at: string;
+      absolute_url: string;
+    }[];
+  };
+}
+
 interface GreenhouseJob {
   absolute_url: string;
   compliance: {
@@ -102,6 +122,10 @@ export interface GreenhouseDepartmentsResponse {
   departments: JobChild[];
 }
 
+export interface GreenhouseOfficesResponse {
+  offices: Office[];
+}
+
 export interface GreenhouseJobsResponse {
   jobs: GreenhouseJob[];
   meta: {
@@ -117,15 +141,17 @@ export class GreenhousePlugin {
   static CONCURRENT_REQUESTS = 20;
   static SCHOOL_PAGES = 30;
 
-  static DEPARTMENTS_URL =
-    'https://api.greenhouse.io/v1/boards/${boardToken}/departments';
   static DEGREES_URL =
     'https://api.greenhouse.io/v1/boards/${boardToken}/education/degrees';
+  static DEPARTMENTS_URL =
+    'https://api.greenhouse.io/v1/boards/${boardToken}/departments';
   static DISCIPLINES_URL =
     'https://api.greenhouse.io/v1/boards/${boardToken}/education/disciplines';
   static JOBS_URL = 'https://api.greenhouse.io/v1/boards/${boardToken}/jobs';
   static JOB_URL =
     'https://api.greenhouse.io/v1/boards/${boardToken}/jobs/${jobId}?questions=true';
+  static OFFICES_URL =
+    'https://api.greenhouse.io/v1/boards/${boardToken}/offices';
   static SCHOOLS_URL =
     'https://api.greenhouse.io/v1/boards/${boardToken}/education/schools';
 
@@ -161,6 +187,14 @@ export class GreenhousePlugin {
     });
     const response = await fetch(url);
     return ((await response.json()) as GreenhouseEducationResponse).items;
+  }
+
+  async getOffices() {
+    const url = interpolate(this.pod, GreenhousePlugin.OFFICES_URL, {
+      boardToken: this.options.boardToken,
+    });
+    const response = await fetch(url);
+    return (await response.json()) as GreenhouseOfficesResponse;
   }
 
   async getSchools() {
