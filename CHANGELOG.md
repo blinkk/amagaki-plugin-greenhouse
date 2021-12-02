@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://www.github.com/blinkk/amagaki-plugin-greenhouse/compare/v1.4.0...v1.5.0) (2021-12-02)
+
+
+### Features
+
+* add getDepartments ([3b61c33](https://www.github.com/blinkk/amagaki-plugin-greenhouse/commit/3b61c33af0782f799dd00e6b06b70506656b3168))
+
 ## [1.4.0](https://www.github.com/blinkk/amagaki-plugin-greenhouse/compare/v1.3.0...v1.4.0) (2021-11-29)
 
 
