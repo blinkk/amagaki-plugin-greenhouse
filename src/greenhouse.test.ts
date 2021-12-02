@@ -16,3 +16,12 @@ test('Test GreenhousePlugin', async (t: ExecutionContext) => {
   });
   t.pass();
 });
+
+test('Test getDepartments', async (t: ExecutionContext) => {
+  const pod = new Pod('../example');
+  const greenhouse = GreenhousePlugin.register(pod, {
+    boardToken: 'vaulttec',
+  });
+  const resp = await greenhouse.getDepartments();
+  t.truthy(resp);
+});

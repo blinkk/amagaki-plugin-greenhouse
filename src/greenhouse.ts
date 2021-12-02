@@ -98,6 +98,10 @@ interface GreenhouseJob {
   questions: Question[];
 }
 
+export interface GreenhouseDepartmentsResponse {
+  departments: JobChild[];
+}
+
 export interface GreenhouseJobsResponse {
   jobs: GreenhouseJob[];
   meta: {
@@ -113,6 +117,8 @@ export class GreenhousePlugin {
   static CONCURRENT_REQUESTS = 20;
   static SCHOOL_PAGES = 30;
 
+  static DEPARTMENTS_URL =
+    'https://api.greenhouse.io/v1/boards/${boardToken}/departments';
   static DEGREES_URL =
     'https://api.greenhouse.io/v1/boards/${boardToken}/education/degrees';
   static DISCIPLINES_URL =
@@ -139,6 +145,14 @@ export class GreenhousePlugin {
     });
     const response = await fetch(url);
     return ((await response.json()) as GreenhouseEducationResponse).items;
+  }
+
+  async getDepartments() {
+    const url = interpolate(this.pod, GreenhousePlugin.DEPARTMENTS_URL, {
+      boardToken: this.options.boardToken,
+    });
+    const response = await fetch(url);
+    return (await response.json()) as GreenhouseDepartmentsResponse;
   }
 
   async getDisciplines() {
