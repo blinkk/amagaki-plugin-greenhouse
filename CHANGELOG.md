@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://www.github.com/blinkk/amagaki-plugin-greenhouse/compare/v1.5.0...v1.6.0) (2021-12-02)
+
+
+### Features
+
+* add getOffices ([2ae56a9](https://www.github.com/blinkk/amagaki-plugin-greenhouse/commit/2ae56a941b5b67ec173ccb3c63e0b2b65975c3d7))
+
 ## [1.5.0](https://www.github.com/blinkk/amagaki-plugin-greenhouse/compare/v1.4.0...v1.5.0) (2021-12-02)
 
 
