@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://www.github.com/blinkk/amagaki-plugin-greenhouse/compare/v1.6.0...v1.7.0) (2021-12-03)
+
+
+### Features
+
+* add getSections ([704e733](https://www.github.com/blinkk/amagaki-plugin-greenhouse/commit/704e733b401a38ff52ff7d5b26ff242680f67217))
+
 ## [1.6.0](https://www.github.com/blinkk/amagaki-plugin-greenhouse/compare/v1.5.0...v1.6.0) (2021-12-02)
 
 
