@@ -126,6 +126,14 @@ export interface GreenhouseOfficesResponse {
   offices: Office[];
 }
 
+export interface GreenhouseSectionsResponse {
+  sections: {
+    id: number;
+    name: string;
+    jobs: GreenhouseJob[];
+  }[];
+}
+
 export interface GreenhouseJobsResponse {
   jobs: GreenhouseJob[];
   meta: {
@@ -152,6 +160,8 @@ export class GreenhousePlugin {
     'https://api.greenhouse.io/v1/boards/${boardToken}/jobs/${jobId}?questions=true';
   static OFFICES_URL =
     'https://api.greenhouse.io/v1/boards/${boardToken}/offices';
+  static SECTIONS_URL =
+    'https://api.greenhouse.io/v1/boards/${boardToken}/sections';
   static SCHOOLS_URL =
     'https://api.greenhouse.io/v1/boards/${boardToken}/education/schools';
 
@@ -195,6 +205,14 @@ export class GreenhousePlugin {
     });
     const response = await fetch(url);
     return (await response.json()) as GreenhouseOfficesResponse;
+  }
+
+  async getSections() {
+    const url = interpolate(this.pod, GreenhousePlugin.SECTIONS_URL, {
+      boardToken: this.options.boardToken,
+    });
+    const response = await fetch(url);
+    return (await response.json()) as GreenhouseSectionsResponse;
   }
 
   async getSchools() {

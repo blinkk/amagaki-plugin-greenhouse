@@ -34,3 +34,12 @@ test('Test getOffices', async (t: ExecutionContext) => {
   const resp = await greenhouse.getOffices();
   t.truthy(resp);
 });
+
+test('Test getSections', async (t: ExecutionContext) => {
+  const pod = new Pod('../example');
+  const greenhouse = GreenhousePlugin.register(pod, {
+    boardToken: 'vaulttec',
+  });
+  const resp = await greenhouse.getSections();
+  t.truthy(resp);
+});
